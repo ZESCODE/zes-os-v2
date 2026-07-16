@@ -1,0 +1,278 @@
+"use client";
+
+import * as React from "react";
+import { usePathname } from "next/navigation";
+
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import AtomIcon from "@/components/icons/atom";
+import BracketsIcon from "@/components/icons/brackets";
+import ProcessorIcon from "@/components/icons/proccesor";
+import CuteRobotIcon from "@/components/icons/cute-robot";
+import EmailIcon from "@/components/icons/email";
+import GearIcon from "@/components/icons/gear";
+import ZesIcon from "@/components/icons/zes-icon";
+import DotsVerticalIcon from "@/components/icons/dots-vertical";
+import { Bullet } from "@/components/ui/bullet";
+import LockIcon from "@/components/icons/lock";
+import Image from "next/image";
+import { useIsV0 } from "@/lib/v0-context";
+
+const data = {
+  navMain: [
+    {
+      title: "Navigation",
+      items: [
+        {
+          title: "Overview",
+          url: "/",
+          icon: BracketsIcon,
+          isActive: true,
+        },
+        {
+          title: "Laboratory",
+          url: "/laboratory",
+          icon: AtomIcon,
+          isActive: false,
+        },
+        {
+          title: "System",
+          url: "/system",
+          icon: ProcessorIcon,
+          isActive: false,
+        },
+        {
+          title: "Services",
+          url: "/service",
+          icon: CuteRobotIcon,
+          isActive: false,
+        },
+        {
+          title: "Communication",
+          url: "/communication",
+          icon: EmailIcon,
+          isActive: false,
+        },
+        {
+          title: "Kanban",
+          url: "/kanban",
+          icon: GearIcon,
+          isActive: false,
+        },
+        {
+          title: "Hermes Chat",
+          url: "/hermes-chat",
+          icon: EmailIcon,
+          isActive: false,
+        },
+        {
+          title: "OC Chat",
+          url: "/oc-chat",
+          icon: CuteRobotIcon,
+          isActive: false,
+        },
+        {
+          title: "9Router",
+          url: "/9router",
+          icon: BracketsIcon,
+          isActive: false,
+        },
+        {
+          title: "Claude",
+          url: "/claude",
+          icon: CuteRobotIcon,
+          isActive: false,
+        },
+        {
+          title: "Topology",
+          url: "/topology",
+          icon: GearIcon,
+          isActive: false,
+        },
+        {
+          title: "Workflows",
+          url: "/workflows",
+          icon: GearIcon,
+          isActive: false,
+        },
+        {
+          title: "Codex Web",
+          url: "/codex-web",
+          icon: BracketsIcon,
+          isActive: false,
+        },
+        {
+          title: "OpenClaude",
+          url: "/openclaude",
+          icon: AtomIcon,
+          isActive: false,
+        },
+        {
+          title: "Admin Settings",
+          url: "/admin",
+          icon: GearIcon,
+          isActive: false,
+          locked: true,
+        },
+      ],
+    },
+  ],
+  desktop: {
+    title: "ZES OS",
+    status: "online",
+  },
+  user: {
+    name: "ZES ADMIN",
+    email: "admin@zes.local",
+    avatar: "/avatars/user_krimson.png",
+  },
+};
+
+// Compute active state from pathname
+function useActiveNav() {
+  const pathname = usePathname();
+  return pathname;
+}
+
+export function DashboardSidebar({
+  className,
+  ...props
+}: React.ComponentProps<typeof Sidebar>) {
+  const isV0 = useIsV0();
+  const activePath = useActiveNav();
+
+  // Update nav items isActive based on pathname
+  const navWithActive = data.navMain.map((group) => ({
+    ...group,
+    items: group.items.map((item) => ({
+      ...item,
+      isActive: activePath === item.url,
+    })),
+  }));
+
+  return (
+    <Sidebar {...props} className={cn("py-sides", className)}>
+      <SidebarHeader className="rounded-t-lg flex gap-3 flex-row rounded-b-none">
+        <div className="flex overflow-clip size-12 shrink-0 items-center justify-center rounded bg-sidebar-primary-foreground/10 transition-colors group-hover:bg-sidebar-primary text-sidebar-primary-foreground">
+          <ZesIcon className="size-10 group-hover:scale-[1.7] origin-top-left transition-transform" />
+        </div>
+        <div className="grid flex-1 text-left text-sm leading-tight">
+          <span className="text-2xl font-display">ZES OS</span>
+          <span className="text-xs uppercase">Zero Entropy System</span>
+        </div>
+      </SidebarHeader>
+
+      <SidebarContent>
+        {navWithActive.map((group, i) => (
+          <SidebarGroup
+            className={cn(i === 0 && "rounded-t-none")}
+            key={group.title}
+          >
+            <SidebarGroupLabel>
+              <Bullet className="mr-2" />
+              {group.title}
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {group.items.map((item) => (
+                  <SidebarMenuItem
+                    key={item.title}
+                    className={cn(
+                      item.locked && "pointer-events-none opacity-50",
+                      isV0 && "pointer-events-none"
+                    )}
+                    data-disabled={item.locked}
+                  >
+                    <SidebarMenuButton
+                      asChild={!item.locked}
+                      isActive={item.isActive}
+                      disabled={item.locked}
+                      className={cn(
+                        "disabled:cursor-not-allowed",
+                        item.locked && "pointer-events-none"
+                      )}
+                    >
+                      {item.locked ? (
+                        <div className="flex items-center gap-3 w-full">
+                          <item.icon className="size-5" />
+                          <span>{item.title}</span>
+                        </div>
+                      ) : (
+                        <a href={item.url}>
+                          <item.icon className="size-5" />
+                          <span>{item.title}</span>
+                        </a>
+                      )}
+                    </SidebarMenuButton>
+                    {item.locked && (
+                      <SidebarMenuBadge>
+                        <LockIcon className="size-5 block" />
+                      </SidebarMenuBadge>
+                    )}
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
+      </SidebarContent>
+
+      <SidebarFooter className="border-t border-sidebar-border/20">
+        <Popover>
+          <PopoverTrigger asChild>
+            <button className="flex items-center gap-2 w-full p-2 rounded hover:bg-sidebar-accent transition-colors">
+              <div className="size-8 rounded-full bg-sidebar-primary/20 flex items-center justify-center">
+                <Image
+                  src={data.user.avatar}
+                  alt={data.user.name}
+                  width={32}
+                  height={32}
+                  className="size-8 rounded-full object-cover"
+                />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">{data.user.name}</span>
+                <span className="truncate text-xs text-sidebar-foreground/50">
+                  {data.user.email}
+                </span>
+              </div>
+              <DotsVerticalIcon className="size-4 ml-auto text-sidebar-foreground/30" />
+            </button>
+          </PopoverTrigger>
+          <PopoverContent className="w-56" align="end">
+            <div className="grid gap-1">
+              <div className="flex items-center gap-2 px-2 py-1.5">
+                <Bullet variant="success" />
+                <span className="text-sm">
+                  {data.desktop.status === "online"
+                    ? "ZES OS Online"
+                    : "Offline"}
+                </span>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
+      </SidebarFooter>
+
+      <SidebarRail />
+    </Sidebar>
+  );
+}
