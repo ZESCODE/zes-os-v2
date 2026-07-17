@@ -1,9 +1,7 @@
-# ZES OS — Zero Entropy System
+# ZES Dashboard — 
 
 Unified agent orchestration dashboard.
 
-**Originally:** M.O.N.K.Y OS  
-**Rebranded to:** ZES OS (Zero Entropy System)
 
 ## Pages
 - `/` — Overview with system stats and health
