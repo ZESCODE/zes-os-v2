@@ -18,14 +18,15 @@ const navItems = [
   { title: "Lab", href: "/laboratory", icon: AtomIcon, desc: "Experiments" },
   { title: "Kanban", href: "/kanban", icon: BoomIcon, desc: "Tasks" },
   { title: "System", href: "/system", icon: ProcessorIcon, desc: "Resources" },
+  { title: "Procs", href: "/processes", icon: ProcessorIcon, desc: "Processes" },
+  { title: "Net", href: "/network", icon: BracketsIcon, desc: "Network" },
   { title: "Services", href: "/service", icon: CuteRobotIcon, desc: "Guard Bots" },
-  { title: "Comm", href: "/communication", icon: EmailIcon, desc: "Messages" },
   { title: "H.Chat", href: "/hermes-chat", icon: ZesIcon, desc: "Hermes" },
-  { title: "OChat", href: "/oc-chat", icon: GearIcon, desc: "OC Chat" },
+  { title: "ClChat", href: "/claude-chat", icon: GearIcon, desc: "Claude" },
+  { title: "ClCode", href: "/claude-code", icon: AtomIcon, desc: "Claude Code" },
   { title: "Router", href: "/9router", icon: BracketsIcon, desc: "9Router" },
   { title: "Topo", href: "/topology", icon: LockIcon, desc: "Topology" },
   { title: "C.Web", href: "/codex-web", icon: BracketsIcon, desc: "Codex" },
-  { title: "O.Claude", href: "/openclaude", icon: AtomIcon, desc: "OpenClaude" },
 ];
 
 export default function BottomNav() {

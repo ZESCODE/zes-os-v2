@@ -65,7 +65,7 @@
 
   --animate-marquee-up: marquee-up 6s ease-in-out infinite;
   --animate-marquee-down: marquee-down 6s ease-in-out infinite;
-  --animate-marquee-pulse: marquee-pulse 3s ease-in-out infinite;
+  
 
   --animate-marquee-pulse: marquee-pulse 1s linear infinite;
 }

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import { V0Provider } from "@/lib/v0-context";
 import localFont from "next/font/local";
+import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MobileHeader } from "@/components/dashboard/mobile-header";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
@@ -45,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           rel="preload"
@@ -58,38 +59,44 @@ export default function RootLayout({
       <body
         className={`${rebelGrotesk.variable} ${robotoMono.variable} antialiased`}
       >
-        <V0Provider isV0={isV0}>
-          <SidebarProvider>
-            {/* Mobile Header - only visible on mobile */}
-            <MobileHeader mockData={mockData} />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <V0Provider isV0={isV0}>
+            <SidebarProvider>
+              {/* Mobile Header - only visible on mobile */}
+              <MobileHeader mockData={mockData} />
 
-            {/* Desktop Layout */}
-            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-gap lg:px-sides min-h-screen">
-              <div className="hidden lg:block col-span-2 sticky top-0 h-screen overflow-hidden">
-                <DashboardSidebar />
-              </div>
-              <div className="col-span-1 lg:col-span-7 flex flex-col pb-[5rem]">
-                <div className="flex-1">{children}</div>
-
-              </div>
-              <div className="col-span-3 hidden lg:block">
-                <div className="space-y-gap py-sides min-h-screen max-h-screen sticky top-0 overflow-clip">
-                  <Widget widgetData={mockData.widgetData} />
-                  <Notifications
-                    initialNotifications={mockData.notifications}
-                  />
-                  <Chat />
+              {/* Desktop Layout */}
+              <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-gap lg:px-sides min-h-screen">
+                <div className="hidden lg:block col-span-2 sticky top-0 h-screen overflow-hidden">
+                  <DashboardSidebar />
+                </div>
+                <div className="col-span-1 lg:col-span-7 flex flex-col pb-[5rem]">
+                  <div className="flex-1">{children}</div>
+                </div>
+                <div className="col-span-3 hidden lg:block">
+                  <div className="space-y-gap py-sides min-h-screen max-h-screen sticky top-0 overflow-clip">
+                    <Widget widgetData={mockData.widgetData} />
+                    <Notifications
+                      initialNotifications={mockData.notifications}
+                    />
+                    <Chat />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Mobile Chat - floating CTA with drawer */}
-            <MobileChat />
+              {/* Mobile Chat - floating CTA with drawer */}
+              <MobileChat />
 
-            {/* Bottom Navigation - mobile only */}
-            <BottomNav />
-          </SidebarProvider>
-        </V0Provider>
+              {/* Bottom Navigation - mobile only */}
+              <BottomNav />
+            </SidebarProvider>
+          </V0Provider>
+        </ThemeProvider>
       </body>
     </html>
   );

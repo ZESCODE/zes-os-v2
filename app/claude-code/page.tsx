@@ -5,11 +5,11 @@ import DashboardPageLayout from "@/components/dashboard/layout";
 import DashboardCard from "@/components/dashboard/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Play, Square, Server, FlaskConical } from "lucide-react";
+import { Play, Square, Server, ExternalLink, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
-import AtomIcon from "@/components/icons/atom";
+import CuteRobotIcon from "@/components/icons/cute-robot";
 
-export default function OpenClaudePage() {
+export default function ClaudeCodePage() {
   const [status, setStatus] = useState("checking");
   const [serviceInfo, setServiceInfo] = useState(null);
   const [result, setResult] = useState("");
@@ -17,14 +17,9 @@ export default function OpenClaudePage() {
   const checkStatus = async () => {
     setStatus("checking");
     try {
-      const res = await fetch(`http://localhost:5002/api/health/openclaude`);
-      if (res.ok) {
-        const data = await res.json();
-        setStatus(data.status || "running");
-        setServiceInfo(data);
-      } else {
-        setStatus("error");
-      }
+      const res = await fetch(`http://localhost:5905/`);
+      setStatus(res.ok ? "running" : "error");
+      setServiceInfo({ port: 5905, proxy: "9Router", endpoint: "http://localhost:5905" });
     } catch {
       setStatus("stopped");
     }
@@ -32,40 +27,26 @@ export default function OpenClaudePage() {
 
   useEffect(() => {
     checkStatus();
-    const interval = setInterval(checkStatus, 15000);
+    const interval = setInterval(checkStatus, 30000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleAction = async (action) => {
-    try {
-      const res = await fetch(`http://localhost:5002/api/openclaude/${action}`, { method: "POST" });
-      const data = await res.json();
-      setResult(data.message || data.error || "Done");
-      setTimeout(() => setResult(""), 3000);
-      setTimeout(checkStatus, 2000);
-    } catch (e) {
-      setResult(`Error: ${e.message}`);
-    }
-  };
 
   const statusColor = status === "running" ? "success" : status === "stopped" ? "destructive" : "warning";
 
   return (
-    <DashboardPageLayout header={{ title: "OpenClaude", description: "OpenClaude service manager", icon: AtomIcon }}>
-      {/* Status Card */}
+    <DashboardPageLayout header={{ title: "Claude Code", description: "AI coding agent via 9Router proxy", icon: CuteRobotIcon }}>
       <DashboardCard title="SERVICE STATUS" intent={status === "running" ? "success" : "default"}>
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className={cn(
-                "size-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center",
-                "shadow-lg"
+                "size-12 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg"
               )}>
-                <FlaskConical className="size-6 text-white" />
+                <Bot className="size-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-display">OpenClaude</h3>
-                <p className="text-sm text-muted-foreground">AI agent bridge service</p>
+                <h3 className="text-lg font-display">Claude Code</h3>
+                <p className="text-sm text-muted-foreground">9Router proxy (:5905) → Anthropic API</p>
               </div>
             </div>
             <Badge variant={status === "running" ? "default" : "secondary"} className={cn(
@@ -76,41 +57,20 @@ export default function OpenClaudePage() {
             </Badge>
           </div>
 
-          {/* Actions */}
           <div className="flex gap-2">
-            <Button
-              onClick={() => handleAction("start")}
-              disabled={status === "running"}
-              variant="default"
-              size="sm"
-              className="gap-1"
-            >
-              <Play className="h-4 w-4" /> Start
+            <Button onClick={() => window.open("http://localhost:5905", "_blank")} variant="default" size="sm" className="gap-1">
+              <ExternalLink className="h-4 w-4" /> Open Proxy
             </Button>
-            <Button
-              onClick={() => handleAction("stop")}
-              disabled={status !== "running"}
-              variant="outline"
-              size="sm"
-              className="gap-1"
-            >
-              <Square className="h-4 w-4" /> Stop
-            </Button>
-            <Button onClick={checkStatus} variant="ghost" size="sm">
-              Refresh
-            </Button>
+            <Button onClick={checkStatus} variant="ghost" size="sm">Refresh</Button>
           </div>
 
           {result && (
-            <div className="bg-accent/20 rounded-lg px-3 py-2 text-sm font-mono text-muted-foreground">
-              {result}
-            </div>
+            <div className="bg-accent/20 rounded-lg px-3 py-2 text-sm font-mono text-muted-foreground">{result}</div>
           )}
 
-          {/* Info Grid */}
           {serviceInfo && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {Object.entries(serviceInfo).filter(([k]) => k !== "status").map(([key, val]) => (
+              {Object.entries(serviceInfo).map(([key, val]) => (
                 <div key={key} className="bg-accent/20 rounded-lg p-2">
                   <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">{key}</div>
                   <div className="text-xs font-mono font-bold truncate">{String(val)}</div>
@@ -121,12 +81,11 @@ export default function OpenClaudePage() {
         </div>
       </DashboardCard>
 
-      {/* Quick Actions */}
-      <DashboardCard title="GRPC ENDPOINTS" intent="default">
+      <DashboardCard title="PROXY ENDPOINTS" intent="default">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[
-            { port: 50051, name: "gRPC Server", desc: "Primary RPC endpoint" },
-            { port: 5300, name: "Bridge API", desc: "REST ↔ gRPC bridge" },
+            { port: 5905, name: "Claude Proxy", desc: "Anthropic-compatible API via 9Router" },
+            { port: 20128, name: "9Router Gateway", desc: "Main LLM request router" },
           ].map(ep => (
             <div key={ep.port} className="flex items-center justify-between bg-accent/20 rounded-lg p-3">
               <div>

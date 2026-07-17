@@ -35,6 +35,7 @@ import { Bullet } from "@/components/ui/bullet";
 import LockIcon from "@/components/icons/lock";
 import Image from "next/image";
 import { useIsV0 } from "@/lib/v0-context";
+import { ThemeToggle } from "@/components/dashboard/theme-toggle";
 
 const data = {
   navMain: [
@@ -60,15 +61,21 @@ const data = {
           isActive: false,
         },
         {
-          title: "Services",
-          url: "/service",
-          icon: CuteRobotIcon,
+          title: "Processes",
+          url: "/processes",
+          icon: ProcessorIcon,
           isActive: false,
         },
         {
-          title: "Communication",
-          url: "/communication",
-          icon: EmailIcon,
+          title: "Network",
+          url: "/network",
+          icon: BracketsIcon,
+          isActive: false,
+        },
+        {
+          title: "Services",
+          url: "/service",
+          icon: CuteRobotIcon,
           isActive: false,
         },
         {
@@ -84,8 +91,8 @@ const data = {
           isActive: false,
         },
         {
-          title: "OC Chat",
-          url: "/oc-chat",
+          title: "Claude Chat",
+          url: "/claude-chat",
           icon: CuteRobotIcon,
           isActive: false,
         },
@@ -120,8 +127,8 @@ const data = {
           isActive: false,
         },
         {
-          title: "OpenClaude",
-          url: "/openclaude",
+          title: "Claude Code",
+          url: "/claude-code",
           icon: AtomIcon,
           isActive: false,
         },
@@ -236,6 +243,10 @@ export function DashboardSidebar({
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/20">
+        <div className="flex items-center justify-between px-2 py-1">
+          <span className="text-xs text-sidebar-foreground/40">Theme</span>
+          <ThemeToggle />
+        </div>
         <Popover>
           <PopoverTrigger asChild>
             <button className="flex items-center gap-2 w-full p-2 rounded hover:bg-sidebar-accent transition-colors">
