@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import ZesIcon from "@/components/icons/zes-icon";
 import MobileNotifications from "@/components/dashboard/notifications/mobile-notifications";
 import type { MockData } from "@/types/dashboard";
 import BellIcon from "@/components/icons/bell";
@@ -21,13 +20,14 @@ export function MobileHeader({ mockData }: MobileHeaderProps) {
         {/* Left: Sidebar Menu */}
         <SidebarTrigger />
 
-        {/* Center: ZES Logo + Time */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-16 bg-primary rounded flex items-center justify-center">
-              <ZesIcon className="size-6 text-primary-foreground" />
+        {/* Center: ZES brand — glow Z + gradient text */}
+        <div className="flex items-center gap-2">
+          <div className="bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-[5px] p-[2.5px]">
+            <div className="bg-black rounded-[2px] w-6 h-6 flex items-center justify-center">
+              <span className="text-white font-extrabold text-xs">Z</span>
             </div>
           </div>
+          <span className="text-sm font-bold tracking-wide bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">ZES</span>
         </div>
 
         <Sheet>

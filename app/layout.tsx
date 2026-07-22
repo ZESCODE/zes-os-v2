@@ -3,7 +3,6 @@ import "./globals.css";
 import { Metadata } from "next";
 import { V0Provider } from "@/lib/v0-context";
 import localFont from "next/font/local";
-import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MobileHeader } from "@/components/dashboard/mobile-header";
 import { DashboardSidebar } from "@/components/dashboard/sidebar";
@@ -11,9 +10,10 @@ import mockDataJson from "@/mock.json";
 import type { MockData } from "@/types/dashboard";
 import Widget from "@/components/dashboard/widget";
 import Notifications from "@/components/dashboard/notifications";
+import { NotificationBell } from "@/components/dashboard/notification-bell";
 import { MobileChat } from "@/components/chat/mobile-chat";
 import Chat from "@/components/chat";
-import BottomNav from "@/components/dashboard/bottom-nav";
+import CommandPaletteWrapper from "@/components/dashboard/command-palette-wrapper";
 
 const mockData = mockDataJson as MockData;
 
@@ -32,11 +32,11 @@ const isV0 = process.env["VERCEL_URL"]?.includes("vusercontent.net") ?? false;
 
 export const metadata: Metadata = {
   title: {
-    template: "%s – ZES OS",
-    default: "ZES OS",
+    template: "%s – ZES",
+    default: "ZES Orchestration Dashboard",
   },
   description:
-    "ZES OS — Zero Entropy System. Unified agent orchestration.",
+    "ZES Orchestration Dashboard — real-time monitoring, agent orchestration, and system control.",
     generator: 'v0.app'
 };
 
@@ -46,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <head>
         <link
           rel="preload"
@@ -58,45 +58,40 @@ export default function RootLayout({
       </head>
       <body
         className={`${rebelGrotesk.variable} ${robotoMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <V0Provider isV0={isV0}>
-            <SidebarProvider>
-              {/* Mobile Header - only visible on mobile */}
-              <MobileHeader mockData={mockData} />
+        <V0Provider isV0={isV0}>
+          <SidebarProvider>
+            {/* Mobile Header - only visible on mobile */}
+            <MobileHeader mockData={mockData} />
 
-              {/* Desktop Layout */}
-              <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-gap lg:px-sides min-h-screen">
-                <div className="hidden lg:block col-span-2 sticky top-0 h-screen overflow-hidden">
-                  <DashboardSidebar />
-                </div>
-                <div className="col-span-1 lg:col-span-7 flex flex-col pb-[5rem]">
-                  <div className="flex-1">{children}</div>
-                </div>
-                <div className="col-span-3 hidden lg:block">
-                  <div className="space-y-gap py-sides min-h-screen max-h-screen sticky top-0 overflow-clip">
-                    <Widget widgetData={mockData.widgetData} />
-                    <Notifications
-                      initialNotifications={mockData.notifications}
-                    />
-                    <Chat />
+            {/* Desktop Layout */}
+            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-gap lg:px-sides">
+              <div className="hidden lg:block col-span-2 sticky top-0 h-screen">
+                <DashboardSidebar />
+              </div>
+              <div className="col-span-1 lg:col-span-7">
+                {children}
+              </div>
+              <div className="col-span-3 hidden lg:block">
+                <div className="space-y-gap py-sides min-h-screen max-h-screen sticky top-0 overflow-clip">
+                  <div className="flex items-center justify-end px-4">
+                    <NotificationBell />
                   </div>
+                  <Widget widgetData={mockData.widgetData} />
+                  <Notifications
+                    initialNotifications={mockData.notifications}
+                  />
+                  <Chat />
                 </div>
               </div>
+            </div>
 
-              {/* Mobile Chat - floating CTA with drawer */}
-              <MobileChat />
-
-              {/* Bottom Navigation - mobile only */}
-              <BottomNav />
-            </SidebarProvider>
-          </V0Provider>
-        </ThemeProvider>
+            {/* Mobile Chat - floating CTA with drawer */}
+            <MobileChat />
+          </SidebarProvider>
+          <CommandPaletteWrapper />
+        </V0Provider>
       </body>
     </html>
   );

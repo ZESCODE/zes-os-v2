@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,12 +15,6 @@ export default function NotificationItem({
   onMarkAsRead,
   onDelete,
 }: NotificationItemProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const formatTimestamp = (timestamp: string) => {
     const date = new Date(timestamp);
     const now = new Date();
@@ -129,11 +121,8 @@ export default function NotificationItem({
                 {notification.message}
               </p>
               <div className="flex items-center justify-between mt-2">
-                <span
-                  className="text-xs text-muted-foreground"
-                  suppressHydrationWarning
-                >
-                  {mounted ? formatTimestamp(notification.timestamp) : ""}
+                <span className="text-xs text-muted-foreground">
+                  {formatTimestamp(notification.timestamp)}
                 </span>
               </div>
             </div>

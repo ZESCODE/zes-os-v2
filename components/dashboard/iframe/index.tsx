@@ -22,18 +22,21 @@ export default function IFramePage({ url, title }: IFramePageProps) {
       setLoading(true);
       setError(false);
       try {
+        // Use the server-side proxy to avoid CORS issues
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 5000);
-        await fetch(url, {
-          method: "HEAD",
+        const res = await fetch(`/api/service-check?url=${encodeURIComponent(url)}`, {
           signal: controller.signal,
-          mode: "no-cors",
         });
         clearTimeout(timeout);
-        setError(false);
+        if (res.ok) {
+          const data = await res.json();
+          setError(data.status !== "online");
+        } else {
+          setError(true);
+        }
       } catch {
-        // no-cors HEAD might fail even if service is up,
-        // so we'll let the iframe try anyway
+        // If the proxy itself fails, let the iframe try anyway
         setError(false);
       }
       setLoading(false);

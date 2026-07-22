@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { RefreshCw, Wifi, Globe, Server } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import BracketsIcon from "@/components/icons/brackets";
 
 interface NetInterface {
   interface: string;
@@ -48,7 +47,7 @@ export default function NetworkPage() {
       header={{
         title: "Network",
         description: "Network interfaces & addresses",
-        icon: BracketsIcon,
+        icon: Globe,
       }}
     >
       {/* Summary */}
@@ -124,7 +123,9 @@ export default function NetworkPage() {
             { port: 7070, service: "ZES OS Next" },
             { port: 20128, service: "9Router" },
             { port: 5900, service: "Codex" },
-            { port: 8822, service: "amux" },
+            { port: 8788, service: "Claude Dashboard" },
+            { port: 7173, service: "Terminal" },
+            { port: 8822, service: "teams" },
             { port: 5905, service: "Claude Proxy" },
             { port: 5300, service: "Bridge" },
           ].map((svc) => (

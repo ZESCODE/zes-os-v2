@@ -1,36 +1,44 @@
 "use client";
 
-import * as React from "react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  React.useEffect(() => setMounted(true), []);
+  useEffect(() => setMounted(true), []);
 
   if (!mounted) {
-    return (
-      <Button variant="ghost" size="icon" className={cn("size-8", className)} disabled>
-        <Sun className="size-4" />
-      </Button>
-    );
+    return <div className={cn("h-8 w-full rounded-md bg-muted/30 animate-pulse", className)} />;
   }
 
+  const isDark = theme === "dark";
+
   return (
-    <Button
-      variant="ghost"
-      size="icon"
-      className={cn("size-8", className)}
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className={cn(
+        "flex items-center gap-2 w-full px-3 py-1.5 rounded-md text-xs font-medium transition-all",
+        "hover:bg-accent hover:text-accent-foreground",
+        "group",
+        className,
+      )}
     >
-      <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
-    </Button>
+      <div className={cn(
+        "size-6 rounded-md flex items-center justify-center transition-all",
+        isDark ? "bg-amber-500/20 text-amber-400" : "bg-indigo-500/20 text-indigo-400",
+      )}>
+        {isDark ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+      </div>
+      <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+        {isDark ? "Light Mode" : "Dark Mode"}
+      </span>
+      <span className="ml-auto text-[9px] text-muted-foreground/50 uppercase">
+        {isDark ? "🌙" : "☀️"}
+      </span>
+    </button>
   );
 }

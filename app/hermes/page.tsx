@@ -2,7 +2,7 @@
 
 import React from "react";
 import DashboardPageLayout from "@/components/dashboard/layout";
-import IFramePage from "@/components/dashboard/iframe";
+import ServiceCard from "@/components/dashboard/service-card";
 import ZesIcon from "@/components/icons/zes-icon";
 
 export default function HermesPage() {
@@ -10,11 +10,17 @@ export default function HermesPage() {
     <DashboardPageLayout
       header={{
         title: "Hermes Dashboard",
-        description: "Hermes Agent FastAPI dashboard (:9119)",
+        description: "Hermes Agent FastAPI dashboard · :9119",
         icon: ZesIcon,
       }}
     >
-      <IFramePage url="http://localhost:9119" title="Hermes Dashboard" />
+      <ServiceCard
+        url="http://localhost:9119"
+        title="Hermes Agent"
+        description="Hermes Agent dashboard. Memory hub browser, self-improvement review, system status, and agent health monitoring."
+        port={9119}
+        icon={ZesIcon}
+      />
     </DashboardPageLayout>
   );
 }

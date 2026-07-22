@@ -1,74 +1,75 @@
 "use client";
 
-import React from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+import {
+  LayoutDashboard, Columns, MessageSquare, Bot, GitBranch, Server, Activity, Cpu
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import BracketsIcon from "@/components/icons/brackets";
-import AtomIcon from "@/components/icons/atom";
-import ProcessorIcon from "@/components/icons/proccesor";
-import CuteRobotIcon from "@/components/icons/cute-robot";
-import EmailIcon from "@/components/icons/email";
-import GearIcon from "@/components/icons/gear";
-import LockIcon from "@/components/icons/lock";
-import BoomIcon from "@/components/icons/boom";
-import ZesIcon from "@/components/icons/zes-icon";
 
-const navItems = [
-  { title: "Overview", href: "/", icon: BracketsIcon, desc: "Home" },
-  { title: "Lab", href: "/laboratory", icon: AtomIcon, desc: "Experiments" },
-  { title: "Kanban", href: "/kanban", icon: BoomIcon, desc: "Tasks" },
-  { title: "System", href: "/system", icon: ProcessorIcon, desc: "Resources" },
-  { title: "Procs", href: "/processes", icon: ProcessorIcon, desc: "Processes" },
-  { title: "Net", href: "/network", icon: BracketsIcon, desc: "Network" },
-  { title: "Services", href: "/service", icon: CuteRobotIcon, desc: "Guard Bots" },
-  { title: "H.Chat", href: "/hermes-chat", icon: ZesIcon, desc: "Hermes" },
-  { title: "ClChat", href: "/claude-chat", icon: GearIcon, desc: "Claude" },
-  { title: "ClCode", href: "/claude-code", icon: AtomIcon, desc: "Claude Code" },
-  { title: "Router", href: "/9router", icon: BracketsIcon, desc: "9Router" },
-  { title: "Topo", href: "/topology", icon: LockIcon, desc: "Topology" },
-  { title: "C.Web", href: "/codex-web", icon: BracketsIcon, desc: "Codex" },
+const primaryItems = [
+  { icon: LayoutDashboard, label: "Home", href: "/" },
+  { icon: Server, label: "Services", href: "/service" },
+  { icon: Columns, label: "Teams", href: "/kanban" },
+  { icon: MessageSquare, label: "Hermes", href: "/hermes-chat" },
+  { icon: Bot, label: "Claude", href: "/claude" },
+  { icon: GitBranch, label: "Topology", href: "/topology" },
+];
+
+const quickAccessItems = [
+  { icon: Activity, label: "System", href: "/system" },
+  { icon: Cpu, label: "Procs", href: "/processes" },
 ];
 
 export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-background/95 backdrop-blur-lg safe-area-bottom">
-      <div className="flex items-center h-16 px-2 overflow-x-auto gap-0.5 ">
-        {navItems.map((item) => {
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-[rgba(100,116,139,0.15)] bg-[rgba(2,6,23,0.92)] backdrop-blur-[16px] safe-area-bottom md:hidden">
+      <div className="flex justify-around items-center h-14 px-1">
+        {primaryItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href;
           return (
-            <a
-              key={item.href}
-              href={item.href}
+            <Link key={item.href} href={item.href}
               className={cn(
-                "flex flex-col items-center justify-center gap-0 px-2 py-1 rounded-lg transition-all min-w-0 shrink-0",
-                "hover:bg-accent/30",
-                "min-w-[3.2rem]",
-                isActive
-                  ? "text-sidebar-primary-foreground bg-sidebar-primary/5"
-                  : "text-muted-foreground/50 hover:text-muted-foreground"
-              )}
-            >
-              <div className={cn(
-                "p-1 rounded-md transition-all",
-                isActive && "bg-sidebar-primary/10"
+                "flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded-lg transition-all min-w-0 shrink-0 min-h-[44px]",
+                isActive ? "text-[#818cf8]" : "text-[#64748b] hover:text-[#94a3b8]"
               )}>
-                <Icon className={cn(
-                  "size-4",
-                  isActive && "drop-shadow-[0_0_6px_rgba(99,102,241,0.5)]"
-                )} />
+              <div className={cn("p-1 rounded-lg transition-all", isActive && "bg-[rgba(99,102,241,0.1)]")}>
+                <Icon className={cn("h-4 w-4", isActive && "drop-shadow-[0_0_6px_rgba(99,102,241,0.5)]")} />
               </div>
-              <span className={cn(
-                "text-[9px] font-medium leading-tight",
-                isActive ? "text-sidebar-primary-foreground" : "text-muted-foreground/60"
-              )}>
-                {item.title}
-              </span>
-            </a>
+              <span className={cn("text-[8px] font-medium", isActive ? "text-[#818cf8]" : "text-[#64748b]")}>{item.label}</span>
+            </Link>
           );
         })}
+        {/* Overflow menu for quick-access */}
+        <div className="relative group">
+          <div className="flex flex-col items-center justify-center gap-0.5 px-2 py-1.5 rounded-lg min-h-[44px] cursor-pointer text-[#64748b]">
+            <div className="p-1 rounded-lg">
+              <span className="text-lg font-bold leading-none">⋯</span>
+            </div>
+            <span className="text-[8px] font-medium text-[#64748b]">More</span>
+          </div>
+          <div className="absolute bottom-full right-0 mb-1 hidden group-hover:block group-active:block">
+            <div className="bg-[rgba(2,6,23,0.95)] backdrop-blur-[16px] border border-[rgba(100,116,139,0.15)] rounded-lg p-1 shadow-xl min-w-[120px]">
+              {quickAccessItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = pathname === item.href;
+                return (
+                  <Link key={item.href} href={item.href}
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-md text-xs transition-all",
+                      isActive ? "text-[#818cf8] bg-[rgba(99,102,241,0.1)]" : "text-[#64748b] hover:text-[#94a3b8]"
+                    )}>
+                    <Icon className="h-3.5 w-3.5" />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );

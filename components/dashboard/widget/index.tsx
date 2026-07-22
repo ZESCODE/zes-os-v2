@@ -12,11 +12,9 @@ interface WidgetProps {
 }
 
 export default function Widget({ widgetData }: WidgetProps) {
-  const [currentTime, setCurrentTime] = useState<Date | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    // Set on the client only to avoid a server/client hydration mismatch
-    setCurrentTime(new Date());
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -24,8 +22,7 @@ export default function Widget({ widgetData }: WidgetProps) {
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = (date: Date | null) => {
-    if (!date) return "";
+  const formatTime = (date: Date) => {
     return date.toLocaleTimeString("en-US", {
       hour12: true,
       hour: "numeric",
@@ -33,8 +30,7 @@ export default function Widget({ widgetData }: WidgetProps) {
     });
   };
 
-  const formatDate = (date: Date | null) => {
-    if (!date) return { dayOfWeek: "", restOfDate: "" };
+  const formatDate = (date: Date) => {
     const dayOfWeek = date.toLocaleDateString("en-US", {
       weekday: "long",
     });
