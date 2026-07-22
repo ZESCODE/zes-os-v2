@@ -65,8 +65,6 @@
 
   --animate-marquee-up: marquee-up 6s ease-in-out infinite;
   --animate-marquee-down: marquee-down 6s ease-in-out infinite;
-  --animate-marquee-pulse: marquee-pulse 3s ease-in-out infinite;
-
   --animate-marquee-pulse: marquee-pulse 1s linear infinite;
 }
 
@@ -161,6 +159,22 @@
   }
   body {
     @apply bg-muted text-foreground font-mono;
+  }
+
+  /* Subtle scrollbar for webkit browsers */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
   }
 }
 

@@ -10,15 +10,16 @@ import { cn } from "@/lib/utils";
 const primaryItems = [
   { icon: LayoutDashboard, label: "Home", href: "/" },
   { icon: Server, label: "Services", href: "/service" },
-  { icon: Columns, label: "Teams", href: "/kanban" },
-  { icon: MessageSquare, label: "Hermes", href: "/hermes-chat" },
-  { icon: Bot, label: "Claude", href: "/claude" },
-  { icon: GitBranch, label: "Topology", href: "/topology" },
+  { icon: Columns, label: "Tasks", href: "/tasks" },
+  { icon: Activity, label: "Activity", href: "/activity" },
+  { icon: Bot, label: "Templates", href: "/templates" },
+  { icon: Cpu, label: "Scheduler", href: "/scheduler" },
 ];
 
 const quickAccessItems = [
-  { icon: Activity, label: "System", href: "/system" },
-  { icon: Cpu, label: "Procs", href: "/processes" },
+  { icon: GitBranch, label: "Memory", href: "/memory" },
+  { icon: MessageSquare, label: "Companies", href: "/company" },
+  { icon: GitBranch, label: "Pipeline", href: "/company/media-agency/pipeline" },
 ];
 
 export default function BottomNav() {
