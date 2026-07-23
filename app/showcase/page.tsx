@@ -15,7 +15,7 @@ import {
   Layers, Box, Activity, Cpu, Globe, Lock,
   Bell, Settings, User, Star, RefreshCw,
   CreditCard, BarChart3, Cloud, Database,
-  Share2, Terminal, Wifi,
+  Share2, Terminal, Wifi, Book,
 } from "lucide-react";
 import { Bullet } from "@/components/ui/bullet";
 import BracketsIcon from "@/components/icons/brackets";
@@ -316,8 +316,8 @@ export default function ShowcasePage() {
   return (
     <DashboardPageLayout
       header={{
-        title: "Showcase",
-        description: "Glassmorphic theme components & patterns",
+        title: "ZES Dashboard",
+        description: "System overview, components & external resources",
         icon: Sparkles,
       }}
     >
@@ -805,6 +805,67 @@ export default function ShowcasePage() {
             <p className="text-xs">Combine with <code className="bg-white/10 px-1.5 py-0.5 rounded text-[10px]">glow="indigo" | "emerald" | "rose" | "amber"</code> for accent borders and shadows.</p>
           </div>
         </GlassCard>
+      </Section>
+
+      <hr className="glass-divider my-8" />
+
+      {/* ── EXTERNAL PAGE LINKS ── */}
+      <Section title="External Resources">
+        <Grid cols={2}>
+          <a
+            href="https://app.notion.com/p/Claude-Dashboard-a8e881eceb328360b52c8170fd7e7682"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block"
+          >
+            <GlassCard glow="indigo">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="size-10 rounded-lg bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-indigo-500/20 transition-colors">
+                  <svg className="size-5 text-foreground/70 group-hover:text-indigo-400 transition-colors" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M4.5 3.5C3.4 3.5 2.5 4.4 2.5 5.5v13c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2v-13c0-1.1-.9-2-2-2h-15zm0 1.5h15c.3 0 .5.2.5.5v13c0 .3-.2.5-.5.5h-15c-.3 0-.5-.2-.5-.5v-13c0-.3.2-.5.5-.5zm1.5 2v1.5h12V7H6zm0 3v1.5h12V10H6zm0 3v1.5h12V13H6zm0 3v1.5h8V16H6z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold group-hover:text-indigo-400 transition-colors">Claude Dashboard</div>
+                  <div className="text-[10px] text-foreground/50 uppercase tracking-wider">Notion Page</div>
+                </div>
+              </div>
+              <p className="text-xs text-foreground/60 leading-relaxed">
+                ZES Claude Dashboard — project overview, agent integration guide, and system architecture documentation hosted on Notion.
+              </p>
+              <div className="mt-3 flex items-center gap-1.5 text-[10px] text-indigo-400/70 group-hover:text-indigo-400 transition-colors">
+                <span>Open page</span>
+                <ArrowRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </GlassCard>
+          </a>
+
+          <a
+            href="https://app.notion.com/p/Claude-Dashboard-a8e881eceb328360b52c8170fd7e7682"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group block"
+          >
+            <GlassCard glow="cyan">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="size-10 rounded-lg bg-white/10 flex items-center justify-center backdrop-blur-sm group-hover:bg-cyan-500/20 transition-colors">
+                  <Book className="size-5 text-foreground/70 group-hover:text-cyan-400 transition-colors" />
+                </div>
+                <div>
+                  <div className="text-sm font-semibold group-hover:text-cyan-400 transition-colors">System Docs</div>
+                  <div className="text-[10px] text-foreground/50 uppercase tracking-wider">Notion Wiki</div>
+                </div>
+              </div>
+              <p className="text-xs text-foreground/60 leading-relaxed">
+                ZES orchestration system documentation — agent workflow guides, architecture decisions, deployment runbooks, and reference materials.
+              </p>
+              <div className="mt-3 flex items-center gap-1.5 text-[10px] text-cyan-400/70 group-hover:text-cyan-400 transition-colors">
+                <span>Open page</span>
+                <ArrowRight className="size-3 group-hover:translate-x-0.5 transition-transform" />
+              </div>
+            </GlassCard>
+          </a>
+        </Grid>
       </Section>
     </DashboardPageLayout>
   );

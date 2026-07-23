@@ -2,6 +2,7 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import DashboardPageLayout from "@/components/dashboard/layout";
 import DashboardStat from "@/components/dashboard/stat";
 import DashboardChart from "@/components/dashboard/chart";
@@ -40,6 +41,23 @@ const taskStatusColor: Record<string, string> = {
 };
 
 export default function DashboardOverview() {
+  const router = useRouter();
+  const isVercel = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_IS_VERCEL === 'true';
+  
+  useEffect(() => {
+    if (isVercel) {
+      router.replace('/showcase');
+    }
+  }, [isVercel, router]);
+  
+  if (isVercel) {
+    return <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="text-center">
+        <div className="animate-spin size-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+        <p className="text-sm text-muted-foreground">Loading showcase...</p>
+      </div>
+    </div>;
+  }
   const [stats, setStats] = useState<any[]>([]);
   const [rebels, setRebels] = useState<any[]>([]);
   const [security, setSecurity] = useState<any[]>([]);

@@ -43,7 +43,7 @@ import BookTemplateIcon from "@/components/icons/template";
 import Image from "next/image";
 import { useIsV0 } from "@/lib/v0-context";
 import { ThemeToggle } from "@/components/dashboard/theme-toggle";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Target, DollarSign } from "lucide-react";
 
 const STORAGE_KEY = "zes-dashboard-hidden-pages";
 
@@ -71,6 +71,16 @@ const data = {
         { title: "Laboratory", url: "/laboratory", icon: AtomIcon, isActive: false } as NavItem,
         { title: "Showcase", url: "/showcase", icon: Sparkles, isActive: false } as NavItem,
         { title: "Dashboard Config", url: "/dashboard-config", icon: GearIcon, isActive: false } as NavItem,
+      ],
+    },
+    {
+      title: "Company",
+      items: [
+        { title: "Board Room", url: "/company", icon: BuildingIcon, isActive: false } as NavItem,
+        { title: "Org Chart", url: "/company/org-chart", icon: LayoutLeftIcon, isActive: false } as NavItem,
+        { title: "Strategy", url: "/company/strategy", icon: Target, isActive: false } as NavItem,
+        { title: "Budget", url: "/company/budget", icon: DollarSign, isActive: false } as NavItem,
+        { title: "Hire Agent", url: "/company/hire", icon: PlusIcon, isActive: false } as NavItem,
       ],
     },
     {

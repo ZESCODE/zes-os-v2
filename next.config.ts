@@ -1,5 +1,8 @@
 import type { NextConfig } from "next"
 
+const isVercel = process.env.VERCEL === "1"
+const isTermux = !isVercel && process.platform === "linux" && process.env.HOME?.includes("/data/data/com.termux")
+
 const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
@@ -8,20 +11,28 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     qualities: [75, 90],
   },
-  webpack: (config) => {
-    // Android/Termux: avoid EACCES on system dirs by restricting watch scope
+  // Environment variables exposed to client
+  env: {
+    NEXT_PUBLIC_IS_VERCEL: isVercel ? "true" : "false",
+    NEXT_PUBLIC_IS_TERMUX: isTermux ? "true" : "false",
+  },
+}
+
+// Termux-specific webpack overrides (not needed on Vercel)
+if (isTermux) {
+  nextConfig.webpack = (config) => {
     config.watchOptions = {
       poll: 1000,
       aggregateTimeout: 300,
       ignored: [
         "**/node_modules/**",
         "/data/**",
-        "/**",           // Block root scan (causes EACCES on Android)
+        "/**",
       ],
     }
     config.cache = false
     return config
-  },
+  }
 }
 
 export default nextConfig
